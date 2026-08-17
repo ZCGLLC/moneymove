@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Daily Powerball Picks</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-power">POWER</span><span class="brand-ball">BALL</span>
+        <span class="brand-sub">Daily Analysis Picks</span>
+      </div>
+      <p class="official-note">
+        Unofficial analysis tool. Not affiliated with the Multi-State Lottery Association.
+        Official results:
+        <a href="https://www.powerball.com/" target="_blank" rel="noreferrer">powerball.com</a>
+      </p>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow" id="pick-meta">Loading historical draws…</p>
+          <h1>Three sets for today’s drawing</h1>
+          <p class="lede">
+            Every official Powerball drawing since April 22, 1992 is scored. Picks favor the
+            current 5 white balls (1–69) + Powerball (1–26) matrix used since October 7, 2015,
+            while still counting older formats for long-run frequency.
+          </p>
+        </div>
+        <div class="controls">
+          <label>
+            Pick date
+            <input type="date" id="pick-date" />
+          </label>
+          <button type="button" id="refresh-btn">Refresh latest draws</button>
+        </div>
+      </section>
+
+      <p class="status" id="status" hidden></p>
+      <p class="disclaimer" id="disclaimer"></p>
+
+      <section class="tickets" id="tickets" aria-live="polite"></section>
+
+      <section class="grid">
+        <article class="panel">
+          <h2>Hottest white balls</h2>
+          <p class="panel-sub">Current format (Oct 7, 2015 – present)</p>
+          <ol id="hot-white"></ol>
+        </article>
+        <article class="panel">
+          <h2>Most overdue white balls</h2>
+          <p class="panel-sub">Draws since last appearance</p>
+          <ol id="due-white"></ol>
+        </article>
+        <article class="panel">
+          <h2>Hottest Powerballs</h2>
+          <p class="panel-sub">Current red ball 1–26</p>
+          <ol id="hot-pb"></ol>
+        </article>
+        <article class="panel">
+          <h2>All-time white balls</h2>
+          <p class="panel-sub">Every drawing 1992 – present, numbers still legal today</p>
+          <ol id="all-white"></ol>
+        </article>
+      </section>
+
+      <section class="panel recent">
+        <h2>Recent official draws</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>White balls</th>
+                <th>Powerball</th>
+                <th>Power Play</th>
+              </tr>
+            </thead>
+            <tbody id="recent-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        Play responsibly. Never spend more than you can afford. Lottery drawings are random;
+        historical analysis cannot predict the next winning ticket.
+      </p>
+    </footer>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  </body>
+</html>
