@@ -450,14 +450,20 @@ function mergeDraws(base, extra) {
   return Array.from(map.values()).sort((a, b) => a.date.localeCompare(b.date));
 }
 
+function fetchWithTimeout(url, options = {}, ms = 2500) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), ms);
+  return fetch(url, { ...options, signal: controller.signal }).finally(() => clearTimeout(timer));
+}
+
 async function loadBundledDraws() {
-  const response = await fetch("draws.json", { cache: "no-store" });
+  const response = await fetchWithTimeout("draws.json", { cache: "no-store" }, 8000);
   if (!response.ok) throw new Error("Could not load the bundled Powerball archive.");
   return response.json();
 }
 
 async function fetchNyDraws() {
-  const response = await fetch(NY_API, { headers: { Accept: "application/json" } });
+  const response = await fetchWithTimeout(NY_API, { headers: { Accept: "application/json" } }, 4000);
   if (!response.ok) throw new Error(`NY Open Data request failed (${response.status})`);
   const rows = await response.json();
   return rows.map(parseNyRow).filter(Boolean);
@@ -492,17 +498,17 @@ async function loadDraws(refresh = true) {
 async function lookupVisitorIp() {
   const sources = [
     async () => {
-      const response = await fetch("https://api.ipify.org?format=json");
+      const response = await fetchWithTimeout("https://api.ipify.org?format=json", {}, 1200);
       const payload = await response.json();
       return payload.ip;
     },
     async () => {
-      const response = await fetch("https://api64.ipify.org?format=json");
+      const response = await fetchWithTimeout("https://api64.ipify.org?format=json", {}, 1200);
       const payload = await response.json();
       return payload.ip;
     },
     async () => {
-      const response = await fetch("https://www.cloudflare.com/cdn-cgi/trace");
+      const response = await fetchWithTimeout("https://www.cloudflare.com/cdn-cgi/trace", {}, 1200);
       const text = await response.text();
       const match = text.match(/^ip=(.+)$/m);
       return match ? match[1] : "";

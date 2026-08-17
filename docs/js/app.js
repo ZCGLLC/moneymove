@@ -38,18 +38,28 @@ generateBtn.addEventListener("click", () => {
 });
 
 async function boot() {
-  setStatus("Loading every official Powerball drawing and preparing your unique tickets…");
+  setStatus("Loading the official Powerball archive…");
   refreshBtn.disabled = true;
   generateBtn.disabled = true;
   try {
-    const [latestDraws, visitor] = await Promise.all([loadDraws(true), resolveVisitorKey()]);
-    draws = latestDraws;
+    const [bundled, visitor] = await Promise.all([loadBundledDraws(), resolveVisitorKey()]);
+    draws = bundled;
     visitorKey = visitor.key;
     visitorSource = visitor.source;
     generation = 1;
     sessionUsed = [];
     showPicks();
-    setStatus(`Archive current through ${formatDate(draws[draws.length - 1].date)}. New official draws are pulled automatically.`);
+    setStatus("Checking for the latest official drawing…");
+    const latest = await loadDraws(true);
+    const previousLast = bundled.length ? bundled[bundled.length - 1].date : "";
+    const nextLast = latest.length ? latest[latest.length - 1].date : "";
+    draws = latest;
+    if (nextLast !== previousLast) {
+      generation = 1;
+      sessionUsed = [];
+      showPicks();
+    }
+    setStatus(`Archive current through ${formatDate(draws[draws.length - 1].date)}.`);
   } catch (error) {
     setStatus(error.message || "Could not load picks.");
   } finally {

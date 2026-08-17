@@ -1,14 +1,9 @@
 (function setupAds() {
   const config = window.PB_ADS || { enabled: false, provider: "placeholder", slots: {} };
   const nodes = document.querySelectorAll("[data-ad]");
-  if (!config.enabled) {
-    nodes.forEach((node) => {
-      node.hidden = true;
-    });
-    return;
-  }
+  const useAdsense = Boolean(config.enabled && config.provider === "adsense" && config.adsenseClient);
+  const showPlaceholders = Boolean(config.showPlaceholders);
 
-  const useAdsense = config.provider === "adsense" && config.adsenseClient;
   if (useAdsense && !document.querySelector("script[data-pb-adsense]")) {
     const script = document.createElement("script");
     script.async = true;
@@ -21,12 +16,14 @@
   nodes.forEach((node) => {
     const key = node.getAttribute("data-ad");
     const slot = config.slots[key];
-    if (!slot) {
+    const live = Boolean(useAdsense && slot && slot.adsenseSlot);
+    if (!config.enabled || !slot || (!live && !showPlaceholders)) {
       node.hidden = true;
       return;
     }
+    node.hidden = false;
     node.setAttribute("aria-label", "Advertisement");
-    if (useAdsense && slot.adsenseSlot) {
+    if (live) {
       node.innerHTML = "";
       const ins = document.createElement("ins");
       ins.className = "adsbygoogle";
@@ -47,8 +44,16 @@
       else window.addEventListener("load", push, { once: true });
       return;
     }
-    const size = node.classList.contains("ad-mobile") ? slot.mobileSize || slot.size : slot.size;
     const placeholder = node.querySelector(".ad-placeholder");
-    if (placeholder) placeholder.textContent = size.replace("x", " × ");
+    if (placeholder) placeholder.textContent = slot.size.replace("x", " × ");
   });
+
+  document.querySelectorAll(".ad-rail, .ad-band").forEach((group) => {
+    const visible = [...group.querySelectorAll("[data-ad]")].some((node) => !node.hidden);
+    group.hidden = !visible;
+  });
+  const rail = document.querySelector(".ad-rail");
+  if (!rail || rail.hidden) {
+    document.querySelector(".page-shell")?.classList.add("no-rail");
+  }
 })();

@@ -116,7 +116,12 @@
               <button type="button" id="refresh-btn" class="secondary">Check for new official draws</button>
             </div>
           </div>
-          <section class="tickets" id="tickets" aria-live="polite"></section>
+          <section class="tickets" id="tickets" aria-live="polite">
+            <article class="ticket ticket-pending">
+              <h2>Your three sets</h2>
+              <p>Scoring the official archive and preparing tickets unique to this visit.</p>
+            </article>
+          </section>
         </section>
 
         <aside class="ad-slot ad-in-content" data-ad="in-content">
@@ -212,17 +217,19 @@
     </div>
 
     <footer class="site-footer">
-      <div class="wrap footer-inner">
-        <a class="logo" href="#top">
-          <span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i></span>
-          <span class="logo-text">TriplePick<span>.pro</span></span>
-        </a>
-        <nav aria-label="Footer">
-          <a href="#how">How it works</a>
-          <a href="#generate">Generate</a>
-          <a href="#analysis">Analysis</a>
-          <a href="https://www.powerball.com/" target="_blank" rel="noreferrer">Official Powerball</a>
-        </nav>
+      <div class="wrap">
+        <div class="footer-top">
+          <a class="logo" href="#top">
+            <span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="logo-text">TriplePick<span>.pro</span></span>
+          </a>
+          <nav aria-label="Footer">
+            <a href="#how">How it works</a>
+            <a href="#generate">Generate</a>
+            <a href="#analysis">Analysis</a>
+            <a href="https://www.powerball.com/" target="_blank" rel="noreferrer">Official Powerball</a>
+          </nav>
+        </div>
         <p>© 2026 TriplePick.pro · Play responsibly. Never spend more than you can afford.</p>
       </div>
     </footer>

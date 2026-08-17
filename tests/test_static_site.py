@@ -26,5 +26,6 @@ def test_static_app_is_self_contained():
     assert 'data-ad="in-content"' in html
     assert (root / "js" / "ads.js").exists()
     assert (root / "js" / "ads-config.js").exists()
+    assert "showPlaceholders: false" in (root / "js" / "ads-config.js").read_text(encoding="utf-8")
     assert "lookupVisitorIp" in engine
     assert "loadDraws(true)" in app_js

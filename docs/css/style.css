@@ -48,13 +48,13 @@ a {
   border-bottom: 1px solid var(--line);
 }
 
-.header-inner,
-.footer-inner {
+.header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 16px 24px;
   min-height: 72px;
+  flex-wrap: wrap;
 }
 
 .logo {
@@ -87,7 +87,8 @@ a {
 
 .site-nav {
   display: flex;
-  gap: 22px;
+  flex-wrap: wrap;
+  gap: 18px;
 }
 
 .site-nav a,
@@ -227,6 +228,19 @@ h2 {
   gap: 24px;
   align-items: start;
   padding-bottom: 24px;
+}
+
+.page-shell.no-rail {
+  grid-template-columns: 1fr;
+  max-width: 1080px;
+}
+
+#how,
+#generate,
+#analysis,
+#about,
+#top {
+  scroll-margin-top: 88px;
 }
 
 .section-head {
@@ -400,10 +414,23 @@ td {
   font-size: 1.05rem;
 }
 
+.ticket-pending p {
+  margin-bottom: 0;
+}
+
 .site-footer {
   border-top: 1px solid var(--line);
-  padding: 18px 0 48px;
+  padding: 28px 0 48px;
   font-size: 0.9rem;
+}
+
+.footer-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .site-footer nav {
@@ -435,6 +462,12 @@ td {
   display: grid;
   justify-items: center;
   gap: 6px;
+}
+
+.ad-slot[hidden],
+.ad-rail[hidden],
+.ad-band[hidden] {
+  display: none !important;
 }
 
 .ad-label {
@@ -512,10 +545,6 @@ td {
     grid-template-columns: 1fr;
   }
 
-  .site-nav {
-    display: none;
-  }
-
   .ad-rail {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     position: static;
@@ -529,10 +558,13 @@ td {
 
 @media (max-width: 800px) {
   .generate-desk .hero,
-  .grid,
-  .footer-inner {
+  .grid {
     grid-template-columns: 1fr;
     display: grid;
+  }
+
+  .nav-cta {
+    width: 100%;
   }
 
   .ad-leaderboard .ad-frame {
