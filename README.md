@@ -1,12 +1,10 @@
 # Daily Powerball Picks
 
-**Use the software now:** [https://zcgllc.github.io/moneymove/](https://zcgllc.github.io/moneymove/)
+**Use the software now:** [Open Daily Powerball Picks](https://raw.githack.com/ZCGLLC/moneymove/cursor/powerball-daily-picks-9c63/docs/index.html)
 
-Open that link in any browser. It scores every official U.S. Powerball drawing since April 22, 1992 and shows **three ticket sets for today**. Click **Refresh latest draws** after a Monday, Wednesday, or Saturday drawing.
+That link is ready in any browser. It scores every official U.S. Powerball drawing since April 22, 1992 and shows **three ticket sets for today**. Click **Refresh latest draws** after a Monday, Wednesday, or Saturday drawing.
 
-If the GitHub Pages URL is still warming up, this copy of the same app is also live from the current branch:
-
-[https://raw.githack.com/ZCGLLC/moneymove/cursor/powerball-daily-picks-9c63/docs/index.html](https://raw.githack.com/ZCGLLC/moneymove/cursor/powerball-daily-picks-9c63/docs/index.html)
+Stable GitHub Pages URL (after the first Pages deploy): [https://zcgllc.github.io/moneymove/](https://zcgllc.github.io/moneymove/)
 
 Official rules and results live at [powerball.com](https://www.powerball.com/). This project is not affiliated with the Multi-State Lottery Association.
 
