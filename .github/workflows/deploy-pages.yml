@@ -36,10 +36,14 @@ jobs:
           pip install -r requirements.txt
           python scripts/export_draws.py
       - uses: actions/configure-pages@v5
+        id: pages
+        continue-on-error: true
         with:
           enablement: true
-      - uses: actions/upload-pages-artifact@v3
+      - if: steps.pages.outcome == 'success'
+        uses: actions/upload-pages-artifact@v3
         with:
           path: docs
-      - id: deployment
+      - if: steps.pages.outcome == 'success'
+        id: deployment
         uses: actions/deploy-pages@v4
