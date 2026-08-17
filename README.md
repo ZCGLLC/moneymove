@@ -4,7 +4,7 @@
 
 That link is ready in any browser. It scores every official U.S. Powerball drawing since April 22, 1992 and shows **three ticket sets for today**. Click **Refresh latest draws** after a Monday, Wednesday, or Saturday drawing.
 
-Stable GitHub Pages URL (after the first Pages deploy): [https://zcgllc.github.io/moneymove/](https://zcgllc.github.io/moneymove/)
+Stable GitHub Pages URL after Pages is enabled in repo Settings → Pages → GitHub Actions: [https://zcgllc.github.io/moneymove/](https://zcgllc.github.io/moneymove/)
 
 Official rules and results live at [powerball.com](https://www.powerball.com/). This project is not affiliated with the Multi-State Lottery Association.
 
