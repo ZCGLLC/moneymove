@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TriplePick.pro — Three unique Powerball sets from every official draw</title>
+    <meta
+      name="description"
+      content="TriplePick.pro scores every official U.S. Powerball drawing since 1992 and gives each visitor three unique ticket sets. Updated after every drawing."
+    />
+    <meta property="og:title" content="TriplePick.pro" />
+    <meta
+      property="og:description"
+      content="Three unique Powerball sets per visitor, scored from every official drawing since 1992."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://triplepick.pro/" />
+    <meta property="og:site_name" content="TriplePick.pro" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+    <link rel="canonical" href="https://triplepick.pro/" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="logo" href="#top" aria-label="TriplePick.pro home">
+          <span class="logo-mark" aria-hidden="true">
+            <i></i><i></i><i></i>
+          </span>
+          <span class="logo-text">TriplePick<span>.pro</span></span>
+        </a>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="#how">How it works</a>
+          <a href="#generate">Generate</a>
+          <a href="#analysis">Analysis</a>
+          <a href="#about">About</a>
+        </nav>
+        <a class="nav-cta" href="#generate">Get my 3 sets</a>
+      </div>
+    </header>
+
+    <div class="ad-band ad-band-top">
+      <aside class="ad-slot ad-leaderboard" data-ad="top-leaderboard">
+        <span class="ad-label">Advertisement</span>
+        <div class="ad-frame">
+          <div class="ad-placeholder">728 × 90</div>
+        </div>
+      </aside>
+    </div>
+
+    <section class="hero-banner" id="top">
+      <div class="wrap hero-inner">
+        <p class="eyebrow">Powerball number analysis since 1992</p>
+        <h1>Three unique picks. One drawing. Built for you.</h1>
+        <p class="lede">
+          TriplePick.pro scores every official U.S. Powerball drawing ever held, then gives each visitor
+          three original ticket sets keyed to their connection. New results land automatically after
+          Monday, Wednesday, and Saturday drawings.
+        </p>
+        <div class="hero-actions">
+          <a class="generate" href="#generate">Generate my numbers</a>
+          <a class="ghost" href="#how">See how it works</a>
+        </div>
+        <p class="hero-meta" id="pick-meta">Loading the full official archive…</p>
+      </div>
+    </section>
+
+    <section class="how" id="how">
+      <div class="wrap">
+        <p class="eyebrow">How TriplePick works</p>
+        <h2>A full one-page Powerball desk</h2>
+        <div class="how-grid">
+          <article>
+            <span>01</span>
+            <h3>Read every drawing</h3>
+            <p>Official results from April 22, 1992 through the latest Powerball drawing are scored on every visit.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Build three strategies</h3>
+            <p>Hot frequency, overdue numbers, and a balanced pattern that matches how typical winning tickets look.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Make them yours</h3>
+            <p>Your IP is hashed in the browser so another visitor does not receive the same three sets.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <div class="page-shell wrap">
+      <main>
+        <section class="generate-desk" id="generate">
+          <div class="section-head">
+            <p class="eyebrow">Your desk</p>
+            <h2>Generate three unique Powerball sets</h2>
+          </div>
+          <div class="hero">
+            <div>
+              <p class="visitor-note" id="visitor-note">Preparing a private visitor key…</p>
+              <p class="disclaimer" id="disclaimer"></p>
+              <p class="status" id="status" hidden></p>
+            </div>
+            <div class="controls">
+              <label>
+                Drawing date
+                <input type="date" id="pick-date" />
+              </label>
+              <button type="button" id="generate-btn" class="generate">Generate new numbers</button>
+              <button type="button" id="refresh-btn" class="secondary">Check for new official draws</button>
+            </div>
+          </div>
+          <section class="tickets" id="tickets" aria-live="polite">
+            <article class="ticket ticket-pending">
+              <h2>Your three sets</h2>
+              <p>Scoring the official archive and preparing tickets unique to this visit.</p>
+            </article>
+          </section>
+        </section>
+
+        <aside class="ad-slot ad-in-content" data-ad="in-content">
+          <span class="ad-label">Advertisement</span>
+          <div class="ad-frame">
+            <div class="ad-placeholder">336 × 280</div>
+          </div>
+        </aside>
+
+        <section id="analysis">
+          <div class="section-head">
+            <p class="eyebrow">Live archive</p>
+            <h2>What the drawings show</h2>
+          </div>
+          <section class="grid">
+            <article class="panel">
+              <h2>Hottest white balls</h2>
+              <p class="panel-sub">Current format (Oct 7, 2015 – present)</p>
+              <ol id="hot-white"></ol>
+            </article>
+            <article class="panel">
+              <h2>Most overdue white balls</h2>
+              <p class="panel-sub">Draws since last appearance</p>
+              <ol id="due-white"></ol>
+            </article>
+            <article class="panel">
+              <h2>Hottest Powerballs</h2>
+              <p class="panel-sub">Current red ball 1–26</p>
+              <ol id="hot-pb"></ol>
+            </article>
+            <article class="panel">
+              <h2>All-time white balls</h2>
+              <p class="panel-sub">Every drawing 1992 – present, numbers still legal today</p>
+              <ol id="all-white"></ol>
+            </article>
+          </section>
+
+          <section class="panel recent">
+            <h2>Recent official draws</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>White balls</th>
+                    <th>Powerball</th>
+                    <th>Power Play</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-body"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <aside class="ad-rail" aria-label="Sponsored">
+        <aside class="ad-slot ad-rect" data-ad="rail-top">
+          <span class="ad-label">Advertisement</span>
+          <div class="ad-frame">
+            <div class="ad-placeholder">300 × 250</div>
+          </div>
+        </aside>
+        <aside class="ad-slot ad-halfpage" data-ad="rail-mid">
+          <span class="ad-label">Advertisement</span>
+          <div class="ad-frame">
+            <div class="ad-placeholder">300 × 600</div>
+          </div>
+        </aside>
+      </aside>
+    </div>
+
+    <section class="about" id="about">
+      <div class="wrap about-inner">
+        <p class="eyebrow">About TriplePick.pro</p>
+        <h2>A private analysis desk, not a lottery.</h2>
+        <p>
+          TriplePick.pro is an unofficial analysis site. It is not affiliated with the Multi-State Lottery
+          Association or Powerball. Official rules and winning numbers live at
+          <a href="https://www.powerball.com/" target="_blank" rel="noreferrer">powerball.com</a>.
+          Drawings are random. Past results do not change the odds of any future combination.
+        </p>
+      </div>
+    </section>
+
+    <div class="ad-band ad-band-footer">
+      <aside class="ad-slot ad-leaderboard" data-ad="footer-leaderboard">
+        <span class="ad-label">Advertisement</span>
+        <div class="ad-frame">
+          <div class="ad-placeholder">728 × 90</div>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="footer-top">
+          <a class="logo" href="#top">
+            <span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="logo-text">TriplePick<span>.pro</span></span>
+          </a>
+          <nav aria-label="Footer">
+            <a href="#how">How it works</a>
+            <a href="#generate">Generate</a>
+            <a href="#analysis">Analysis</a>
+            <a href="https://www.powerball.com/" target="_blank" rel="noreferrer">Official Powerball</a>
+          </nav>
+        </div>
+        <p>© 2026 TriplePick.pro · Play responsibly. Never spend more than you can afford.</p>
+      </div>
+    </footer>
+
+    <aside class="ad-slot ad-mobile-anchor" data-ad="mobile-anchor">
+      <span class="ad-label">Advertisement</span>
+      <div class="ad-frame">
+        <div class="ad-placeholder">320 × 50</div>
+      </div>
+    </aside>
+
+    <script src="js/engine.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/ads-config.js"></script>
+    <script src="js/ads.js"></script>
+  </body>
+</html>
