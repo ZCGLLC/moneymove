@@ -85,6 +85,7 @@ h1 {
 .panel-sub,
 .disclaimer,
 .status,
+.visitor-note,
 footer {
   color: var(--muted);
 }
@@ -131,6 +132,23 @@ button {
 button:disabled {
   opacity: 0.6;
   cursor: wait;
+}
+
+button.generate {
+  background: var(--gold);
+  color: #1a1204;
+  font-size: 1.05rem;
+  padding: 14px 16px;
+}
+
+button.secondary {
+  background: #2a3358;
+}
+
+.visitor-note {
+  color: var(--gold);
+  font-size: 0.95rem;
+  margin: 0 0 12px;
 }
 
 .disclaimer {

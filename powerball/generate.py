@@ -44,10 +44,23 @@ STRATEGIES = (
 )
 
 
-def generate_daily_picks(draws: list[Draw], pick_date: date | None = None) -> dict:
+def fingerprint_visitor(ip: str) -> str:
+    """Stable visitor key from an IP address. The raw IP is not stored."""
+    normalized = (ip or "").split("%", 1)[0].strip().lower()
+    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()[:16]
+
+
+def generate_daily_picks(
+    draws: list[Draw],
+    pick_date: date | None = None,
+    *,
+    user_key: str | None = None,
+    generation: int = 1,
+) -> dict:
     if not draws:
         raise ValueError("no historical draws available")
     pick_date = pick_date or date.today()
+    generation = max(1, int(generation))
     stats = analyze(draws)
     white_w, pb_w = recency_weights(draws)
     pairs = pair_counts(draws)
@@ -62,7 +75,7 @@ def generate_daily_picks(draws: list[Draw], pick_date: date | None = None) -> di
     used: set[tuple[tuple[int, ...], int]] = {(draw.white, draw.powerball) for draw in draws}
     tickets: list[TicketSet] = []
     for strategy in STRATEGIES:
-        rng = _rng(pick_date, strategy["key"])
+        rng = _rng(pick_date, strategy["key"], user_key, generation)
         ticket = _pick_ticket(
             rng,
             strategy,
@@ -84,6 +97,8 @@ def generate_daily_picks(draws: list[Draw], pick_date: date | None = None) -> di
     return {
         "pick_date": pick_date.isoformat(),
         "next_draw": _next_draw_date(pick_date).isoformat(),
+        "generation": generation,
+        "visitor_keyed": bool(user_key),
         "analyzed_draws": stats.total_draws,
         "current_format_draws": stats.current_format_draws,
         "first_draw": stats.first_draw.isoformat(),
@@ -269,8 +284,9 @@ def _normalize(values: list[float]) -> list[float]:
     return [v / peak for v in out]
 
 
-def _rng(pick_date: date, key: str) -> random.Random:
-    material = f"moneymove-powerball|{pick_date.isoformat()}|{key}|v1".encode()
+def _rng(pick_date: date, key: str, user_key: str | None, generation: int) -> random.Random:
+    visitor = user_key or "anon"
+    material = f"moneymove-powerball|{pick_date.isoformat()}|{visitor}|{generation}|{key}|v2".encode()
     seed = int.from_bytes(hashlib.sha256(material).digest()[:8], "big")
     return random.Random(seed)
 

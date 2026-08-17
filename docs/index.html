@@ -24,11 +24,11 @@
       <section class="hero">
         <div>
           <p class="eyebrow" id="pick-meta">Loading historical draws…</p>
-          <h1>Three sets for today’s drawing</h1>
+          <h1>Your unique Powerball numbers</h1>
           <p class="lede">
-            Every official Powerball drawing since April 22, 1992 is scored in your browser. Picks favor the
-            current 5 white balls (1–69) + Powerball (1–26) matrix used since October 7, 2015,
-            while still counting older formats for long-run frequency.
+            Every official Powerball drawing since April 22, 1992 is scored, and the latest result is
+            pulled automatically after each Monday, Wednesday, and Saturday drawing. Each visitor gets
+            their own tickets, keyed to their IP address.
           </p>
         </div>
         <div class="controls">
@@ -36,11 +36,13 @@
             Pick date
             <input type="date" id="pick-date" />
           </label>
-          <button type="button" id="refresh-btn">Refresh latest draws</button>
+          <button type="button" id="generate-btn" class="generate">Generate new numbers</button>
+          <button type="button" id="refresh-btn" class="secondary">Check for new official draws</button>
         </div>
       </section>
 
       <p class="status" id="status" hidden></p>
+      <p class="visitor-note" id="visitor-note"></p>
       <p class="disclaimer" id="disclaimer"></p>
 
       <section class="tickets" id="tickets" aria-live="polite"></section>

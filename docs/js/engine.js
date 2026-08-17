@@ -257,8 +257,8 @@ function mulberry32(a) {
   };
 }
 
-function makeRng(pickDate, key) {
-  const seed = xmur3(`moneymove-powerball|${pickDate}|${key}|v1`)();
+function makeRng(pickDate, key, userKey, generation) {
+  const seed = xmur3(`moneymove-powerball|${pickDate}|${userKey || "anon"}|${generation}|${key}|v2`)();
   const random = mulberry32(seed);
   return {
     random,
@@ -368,17 +368,19 @@ function nextDrawDate(iso) {
   return iso;
 }
 
-function generateDailyPicks(draws, pickDate) {
+function generateDailyPicks(draws, pickDate, userKey, generation, priorUsed) {
   if (!draws.length) throw new Error("no historical draws available");
+  generation = Math.max(1, Number(generation) || 1);
   const stats = analyze(draws);
   const [whiteRecency, pbRecency] = recencyWeights(draws);
   const pairs = pairCounts(draws);
   const whiteGap = lastSeenGaps(draws, "white");
   const pbGap = lastSeenGaps(draws, "powerball");
   const used = new Set(draws.map((draw) => `${[...draw.white].sort((a, b) => a - b).join(",")}|${draw.powerball}`));
+  (priorUsed || []).forEach((key) => used.add(key));
   const tickets = STRATEGIES.map((strategy) => {
     const ticket = pickTicket(
-      makeRng(pickDate, strategy.key),
+      makeRng(pickDate, strategy.key, userKey, generation),
       strategy,
       stats,
       whiteRecency,
@@ -394,6 +396,8 @@ function generateDailyPicks(draws, pickDate) {
   return {
     pick_date: pickDate,
     next_draw: nextDrawDate(pickDate),
+    generation,
+    visitor_keyed: Boolean(userKey),
     analyzed_draws: stats.totalDraws,
     current_format_draws: stats.currentFormatDraws,
     first_draw: stats.firstDraw,
@@ -459,9 +463,89 @@ async function fetchNyDraws() {
   return rows.map(parseNyRow).filter(Boolean);
 }
 
-async function loadDraws(refresh) {
+const NY_CACHE_KEY = "pb-ny-draws-v1";
+
+async function loadDraws(refresh = true) {
   const bundled = await loadBundledDraws();
   if (!refresh) return bundled;
-  const latest = await fetchNyDraws();
-  return mergeDraws(bundled, latest);
+  try {
+    const latest = await fetchNyDraws();
+    try {
+      localStorage.setItem(NY_CACHE_KEY, JSON.stringify({ at: Date.now(), draws: latest }));
+    } catch (_error) {
+      /* ignore quota / private-mode failures */
+    }
+    return mergeDraws(bundled, latest);
+  } catch (_error) {
+    try {
+      const cached = JSON.parse(localStorage.getItem(NY_CACHE_KEY) || "null");
+      if (cached && Array.isArray(cached.draws) && cached.draws.length) {
+        return mergeDraws(bundled, cached.draws);
+      }
+    } catch (_ignored) {
+      /* fall through to bundled archive */
+    }
+    return bundled;
+  }
+}
+
+async function lookupVisitorIp() {
+  const sources = [
+    async () => {
+      const response = await fetch("https://api.ipify.org?format=json");
+      const payload = await response.json();
+      return payload.ip;
+    },
+    async () => {
+      const response = await fetch("https://api64.ipify.org?format=json");
+      const payload = await response.json();
+      return payload.ip;
+    },
+    async () => {
+      const response = await fetch("https://www.cloudflare.com/cdn-cgi/trace");
+      const text = await response.text();
+      const match = text.match(/^ip=(.+)$/m);
+      return match ? match[1] : "";
+    },
+  ];
+  for (const source of sources) {
+    try {
+      const ip = String((await source()) || "").trim();
+      if (ip) return ip;
+    } catch (_error) {
+      /* try the next source */
+    }
+  }
+  throw new Error("ip lookup failed");
+}
+
+async function hashValue(value) {
+  const encoded = new TextEncoder().encode(String(value).trim().toLowerCase());
+  if (globalThis.crypto && crypto.subtle) {
+    const digest = await crypto.subtle.digest("SHA-256", encoded);
+    return Array.from(new Uint8Array(digest))
+      .map((byte) => byte.toString(16).padStart(2, "0"))
+      .join("")
+      .slice(0, 16);
+  }
+  return xmur3(String(value).trim().toLowerCase())().toString(16).padStart(8, "0");
+}
+
+async function resolveVisitorKey() {
+  try {
+    const ip = await lookupVisitorIp();
+    return { key: await hashValue(ip), source: "ip" };
+  } catch (_error) {
+    let token = "";
+    try {
+      token = sessionStorage.getItem("pb-visitor-fallback") || "";
+      if (!token) {
+        token = crypto.randomUUID();
+        sessionStorage.setItem("pb-visitor-fallback", token);
+      }
+    } catch (_ignored) {
+      token = `session-${Date.now()}-${Math.random()}`;
+    }
+    return { key: await hashValue(token), source: "session" };
+  }
 }

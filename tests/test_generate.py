@@ -1,6 +1,6 @@
 from datetime import date
 
-from powerball.generate import generate_daily_picks
+from powerball.generate import fingerprint_visitor, generate_daily_picks
 from tests.conftest import make_draw
 
 
@@ -58,3 +58,29 @@ def test_different_days_can_change_picks():
     assert monday["next_draw"] == "2026-08-17"
     assert tuesday["next_draw"] == "2026-08-19"
     assert monday["tickets"] != tuesday["tickets"]
+
+
+def test_different_ips_get_different_tickets():
+    draws = _history()
+    first = generate_daily_picks(
+        draws,
+        date(2026, 8, 17),
+        user_key=fingerprint_visitor("1.1.1.1"),
+    )
+    second = generate_daily_picks(
+        draws,
+        date(2026, 8, 17),
+        user_key=fingerprint_visitor("8.8.8.8"),
+    )
+    assert first["tickets"] != second["tickets"]
+    assert first["visitor_keyed"] is True
+
+
+def test_same_ip_is_stable_until_user_generates_again():
+    draws = _history()
+    key = fingerprint_visitor("203.0.113.10")
+    first = generate_daily_picks(draws, date(2026, 8, 17), user_key=key, generation=1)
+    second = generate_daily_picks(draws, date(2026, 8, 17), user_key=key, generation=1)
+    third = generate_daily_picks(draws, date(2026, 8, 17), user_key=key, generation=2)
+    assert first["tickets"] == second["tickets"]
+    assert first["tickets"] != third["tickets"]

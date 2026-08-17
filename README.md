@@ -2,7 +2,7 @@
 
 **Use the software now:** [Open Daily Powerball Picks](https://raw.githack.com/ZCGLLC/moneymove/cursor/powerball-daily-picks-9c63/docs/index.html)
 
-That link is ready in any browser. It scores every official U.S. Powerball drawing since April 22, 1992 and shows **three ticket sets for today**. Click **Refresh latest draws** after a Monday, Wednesday, or Saturday drawing.
+Anyone can open that link and click **Generate new numbers**. The site scores every official U.S. Powerball drawing since April 22, 1992, pulls new results automatically after each drawing, and gives each visitor their own tickets keyed to their IP address. The raw IP is hashed in the browser and is not stored.
 
 Stable GitHub Pages URL after Pages is enabled in repo Settings → Pages → GitHub Actions: [https://zcgllc.github.io/moneymove/](https://zcgllc.github.io/moneymove/)
 
@@ -11,9 +11,9 @@ Official rules and results live at [powerball.com](https://www.powerball.com/). 
 ## What it does
 
 1. Loads the 1992–early 2010 archive bundled in `data/historical_1992_2010.csv`, plus two later Saturday drawings that NY Open Data omits.
-2. Refreshes 2010–present results from [NY Open Data](https://data.ny.gov/Government-Finance/Lottery-Powerball-Winning-Numbers-Beginning-2010/d6yy-54nr) (the same public feed used for official historical Powerball numbers).
+2. Pulls 2010–present results from [NY Open Data](https://data.ny.gov/Government-Finance/Lottery-Powerball-Winning-Numbers-Beginning-2010/d6yy-54nr) on every visit, then checks again automatically after Monday, Wednesday, and Saturday drawings.
 3. Scores hot numbers, overdue numbers, all-time frequency, recent-draw recency, and typical winning-ticket shape (odd/even mix, high/low mix, white-ball sum).
-4. Uses a date-based seed so the same calendar day always returns the same three sets.
+4. Seeds each visitor’s tickets from a hash of their IP so two people do not receive the same sets. Clicking **Generate new numbers** creates another unique trio for that visitor.
 
 The three daily sets are:
 
@@ -42,7 +42,7 @@ Open [http://127.0.0.1:5000](http://127.0.0.1:5000).
 
 ```bash
 python -m powerball
-python -m powerball --date 2026-08-17
+python -m powerball --date 2026-08-17 --ip 203.0.113.10
 python -m powerball --refresh --json
 ```
 

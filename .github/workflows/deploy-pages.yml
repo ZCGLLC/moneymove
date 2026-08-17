@@ -6,11 +6,16 @@ on:
       - main
       - cursor/powerball-daily-picks-9c63
   schedule:
+    # Powerball draws Mon/Wed/Sat at 10:59pm ET (02:59 UTC during EDT, 03:59 UTC during EST).
+    - cron: "20 3 * * 2,4,0"
+    - cron: "50 3 * * 2,4,0"
     - cron: "30 4 * * 2,4,0"
+    - cron: "30 6 * * 2,4,0"
+    - cron: "0 12 * * *"
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -26,6 +31,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -35,6 +42,18 @@ jobs:
         run: |
           pip install -r requirements.txt
           python scripts/export_draws.py
+      - name: Commit updated archive
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/draws.json
+          if git diff --cached --quiet; then
+            echo "Archive already current"
+          else
+            git commit -m "Refresh Powerball archive after latest official draw"
+            git push
+          fi
       - uses: actions/configure-pages@v5
         id: pages
         continue-on-error: true

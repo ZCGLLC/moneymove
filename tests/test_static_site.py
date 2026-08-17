@@ -15,3 +15,9 @@ def test_static_app_is_self_contained():
     assert draws[0]["powerball"] == 15
     assert draws[-1]["date"] >= "2026-08-15"
     assert len(draws[-1]["white"]) == 5
+    html = (root / "index.html").read_text(encoding="utf-8")
+    engine = (root / "js" / "engine.js").read_text(encoding="utf-8")
+    app_js = (root / "js" / "app.js").read_text(encoding="utf-8")
+    assert "Generate new numbers" in html
+    assert "lookupVisitorIp" in engine
+    assert "loadDraws(true)" in app_js
