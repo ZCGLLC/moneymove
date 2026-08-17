@@ -6,30 +6,27 @@ TriplePick.pro is a one-page Powerball analysis desk. It scores every official U
 
 Production domain: [https://triplepick.pro/](https://triplepick.pro/)
 
-## Connect triplepick.pro
+Browsers hide the `http://` / `https://` prefix. A secured TriplePick site shows a **lock** and opens as **https://triplepick.pro/**.
 
-The app is ready in this repo (`docs/CNAME` is already `triplepick.pro`). The domain currently still points at Squarespace, so you have to do these two owner steps.
+## Connect triplepick.pro (HTTPS)
 
-### 1. Turn on GitHub Pages first
+GitHub Pages is already publishing TriplePick from this branch (`/docs`) with custom domain `triplepick.pro`. The lock / HTTPS certificate cannot finish while the **apex** (`triplepick.pro` with no `www`) still points at Squarespace.
 
-In [ZCGLLC/moneymove](https://github.com/ZCGLLC/moneymove):
+Squarespace often puts its own A records back after you save. If [https://triplepick.pro/](https://triplepick.pro/) shows **Coming Soon**, the domain is still on Squarespace, not this site.
 
-1. Merge this branch into `main`, or keep Pages pointed at `cursor/powerball-daily-picks-9c63`.
-2. Open **Settings → Pages**.
-3. Under **Build and deployment → Source**, choose **GitHub Actions**, or **Deploy from a branch** with branch `main` (or this feature branch) and folder `/docs`.
-4. Under **Custom domain**, enter `triplepick.pro` and click **Save**.
-5. Wait for the DNS check. After it succeeds, check **Enforce HTTPS**.
+### 1. Disconnect Squarespace from the website
 
-The preview URL will be `https://zcgllc.github.io/moneymove/` until DNS switches.
+In [account.squarespace.com](https://account.squarespace.com) → **Domains** → **triplepick.pro**:
 
-### 2. Point Squarespace DNS at GitHub
+1. If the domain is connected to a Squarespace site or “Coming Soon” page, **disconnect** it. Leave the domain in Squarespace only as DNS.
+2. Open **DNS** → **DNS Settings**.
+3. Delete every **A** record for `@` / `triplepick.pro` that uses `198.49…` or `198.185…`.
+4. Delete any **www** CNAME to `ext-sq.squarespace.com`.
+5. Keep MX/TXT records if you use email.
 
-`triplepick.pro` is on Squarespace DNS and now serves a Coming Soon page. In [account.squarespace.com](https://account.squarespace.com) → **Domains** → **triplepick.pro** → **DNS** → **DNS Settings**:
+### 2. Point the apex at GitHub Pages
 
-1. Delete the Squarespace default **A** records for `@` (`198.49…` / `198.185…`).
-2. Delete the **www** CNAME that points to `ext-sq.squarespace.com`.
-3. Delete any leftover **HTTPS** / Squarespace website records that conflict. Keep MX/TXT records if you use email.
-4. Under **Custom records**, add:
+Add these **custom** records only:
 
 | Type | Name / Host | Data |
 | --- | --- | --- |
@@ -39,9 +36,22 @@ The preview URL will be `https://zcgllc.github.io/moneymove/` until DNS switches
 | A | `@` | `185.199.111.153` |
 | CNAME | `www` | `zcgllc.github.io` |
 
-Save. DNS can take a few minutes to a few hours. When it is right, `triplepick.pro` should resolve to those `185.199…` addresses, not Squarespace.
+Save. Do **not** click Squarespace’s “link domain” / default website records again. Those overwrite GitHub and break HTTPS.
 
-Until that switch is done, the live app is still here: [current TriplePick.pro build](https://raw.githack.com/ZCGLLC/moneymove/cursor/powerball-daily-picks-9c63/docs/index.html).
+When this is right, `triplepick.pro` resolves to `185.199.108–111.153`, not `198.49…` / `198.185…`.
+
+### 3. Turn on Enforce HTTPS
+
+In [ZCGLLC/moneymove → Settings → Pages](https://github.com/ZCGLLC/moneymove/settings/pages):
+
+1. Keep **Custom domain** as `triplepick.pro`.
+2. Keep source on this branch and folder **`/docs`** (or `main` + `/docs` after merge).
+3. Wait until GitHub shows the domain check as successful and the certificate is issued.
+4. Check **Enforce HTTPS**. That makes `http://triplepick.pro` redirect to **`https://triplepick.pro`** with a lock.
+
+GitHub cannot issue that certificate while Squarespace still answers `triplepick.pro`.
+
+Until the A records stay on GitHub, use the live TriplePick build: [current TriplePick.pro page](https://raw.githack.com/ZCGLLC/moneymove/cursor/powerball-daily-picks-9c63/docs/index.html).
 
 Official rules and results live at [powerball.com](https://www.powerball.com/). TriplePick.pro is not affiliated with the Multi-State Lottery Association.
 
