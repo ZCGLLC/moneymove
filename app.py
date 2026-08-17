@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 from datetime import date, datetime
+from pathlib import Path
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, request, send_from_directory
 
 from powerball.data import load_all_draws
 from powerball.generate import generate_daily_picks
 
+DOCS = Path(__file__).resolve().parent / "docs"
 app = Flask(__name__)
 _draws_cache: list | None = None
 
@@ -18,11 +20,6 @@ def get_draws(*, refresh: bool = False):
     if refresh or _draws_cache is None:
         _draws_cache = load_all_draws(refresh=refresh)
     return _draws_cache
-
-
-@app.get("/")
-def index():
-    return render_template("index.html")
 
 
 @app.get("/api/picks")
@@ -40,6 +37,16 @@ def api_refresh():
     payload = generate_daily_picks(draws, pick_date)
     payload["refreshed"] = True
     return jsonify(payload)
+
+
+@app.get("/")
+def index():
+    return send_from_directory(DOCS, "index.html")
+
+
+@app.get("/<path:filename>")
+def docs_files(filename):
+    return send_from_directory(DOCS, filename)
 
 
 def _parse_date(value: str | None) -> date:

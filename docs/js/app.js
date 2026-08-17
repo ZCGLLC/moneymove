@@ -5,6 +5,8 @@ const disclaimer = document.getElementById("disclaimer");
 const tickets = document.getElementById("tickets");
 const pickMeta = document.getElementById("pick-meta");
 
+let draws = [];
+
 function todayIso() {
   const now = new Date();
   const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -13,31 +15,29 @@ function todayIso() {
 }
 
 pickDate.value = todayIso();
-loadPicks();
+boot();
 
-pickDate.addEventListener("change", loadPicks);
-refreshBtn.addEventListener("click", () => loadPicks(true));
+pickDate.addEventListener("change", () => showPicks());
+refreshBtn.addEventListener("click", () => boot(true));
 
-async function loadPicks(refresh = false) {
-  setStatus(refresh ? "Refreshing official draws from NY Open Data…" : "Scoring historical draws…");
+async function boot(refresh = false) {
+  setStatus(refresh ? "Refreshing official draws from NY Open Data…" : "Scoring every Powerball drawing since 1992…");
   refreshBtn.disabled = true;
   try {
-    const date = pickDate.value || todayIso();
-    const response = await fetch(refresh ? `/api/refresh?date=${date}` : `/api/picks?date=${date}`, {
-      method: refresh ? "POST" : "GET",
-      headers: { Accept: "application/json" },
-    });
-    if (!response.ok) {
-      throw new Error(`Request failed (${response.status})`);
-    }
-    const data = await response.json();
-    render(data);
-    setStatus("");
+    draws = await loadDraws(refresh);
+    showPicks();
+    setStatus(refresh ? `Updated through ${draws[draws.length - 1].date}.` : "");
   } catch (error) {
     setStatus(error.message || "Could not load picks.");
   } finally {
     refreshBtn.disabled = false;
   }
+}
+
+function showPicks() {
+  if (!draws.length) return;
+  const data = generateDailyPicks(draws, pickDate.value || todayIso());
+  render(data);
 }
 
 function render(data) {

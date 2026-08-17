@@ -1,9 +1,12 @@
 # Daily Powerball Picks
 
-Simple software that scores **every official U.S. Powerball drawing since April 22, 1992** and prints **three ticket sets per day** for the current game:
+**Use the software now:** [https://zcgllc.github.io/moneymove/](https://zcgllc.github.io/moneymove/)
 
-- 5 white balls from 1–69
-- 1 red Powerball from 1–26
+Open that link in any browser. It scores every official U.S. Powerball drawing since April 22, 1992 and shows **three ticket sets for today**. Click **Refresh latest draws** after a Monday, Wednesday, or Saturday drawing.
+
+If the GitHub Pages URL is still warming up, this copy of the same app is also live from the current branch:
+
+[https://raw.githack.com/ZCGLLC/moneymove/cursor/powerball-daily-picks-9c63/docs/index.html](https://raw.githack.com/ZCGLLC/moneymove/cursor/powerball-daily-picks-9c63/docs/index.html)
 
 Official rules and results live at [powerball.com](https://www.powerball.com/). This project is not affiliated with the Multi-State Lottery Association.
 
@@ -19,12 +22,14 @@ The three daily sets are:
 | Set | How it is built |
 | --- | --- |
 | **Hot Frequency** | Favors numbers drawn most often in the current 5/69 + 1/26 format, with extra weight on recent drawings. |
-| **Overdue** | Favors current-format numbers that have gone longer than usual without appearing. |
+| **Overdue** | Favors numbers that have gone longer than usual without appearing. |
 | **Balanced Pattern** | Mixes those signals, then keeps tickets that look like typical jackpot draws (usually 2–3 odd and 2–3 high white balls). |
 
 Powerball drawings are random. Past results do not change the odds of any future combination. These picks are statistical entertainment, not a prediction of the jackpot.
 
-## Run the web app
+## Run locally
+
+The live site needs no install. To run the same app on your computer:
 
 ```bash
 python3 -m venv .venv
@@ -33,7 +38,7 @@ pip install -r requirements.txt
 python app.py
 ```
 
-Open [http://127.0.0.1:5000](http://127.0.0.1:5000). Use **Refresh latest draws** after a Monday, Wednesday, or Saturday drawing.
+Open [http://127.0.0.1:5000](http://127.0.0.1:5000).
 
 ## Command line
 
