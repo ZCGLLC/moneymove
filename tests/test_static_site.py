@@ -19,6 +19,8 @@ def test_static_app_is_self_contained():
     engine = (root / "js" / "engine.js").read_text(encoding="utf-8")
     app_js = (root / "js" / "app.js").read_text(encoding="utf-8")
     assert "Generate new numbers" in html
+    assert "TriplePick.pro" in html
+    assert 'href="https://triplepick.pro/"' in html
     assert 'data-ad="top-leaderboard"' in html
     assert 'data-ad="rail-top"' in html
     assert 'data-ad="in-content"' in html
