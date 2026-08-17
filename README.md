@@ -15,6 +15,8 @@ Official rules and results live at [powerball.com](https://www.powerball.com/). 
 3. Scores hot numbers, overdue numbers, all-time frequency, recent-draw recency, and typical winning-ticket shape (odd/even mix, high/low mix, white-ball sum).
 4. Seeds each visitor’s tickets from a hash of their IP so two people do not receive the same sets. Clicking **Generate new numbers** creates another unique trio for that visitor.
 
+The layout reserves standard IAB ad units (728×90 leaderboard, 300×250, 300×600, in-content 336×280, and a mobile 320×50 anchor) so ads can run without covering the tickets. To switch on Google AdSense, edit `docs/js/ads-config.js`: set `provider` to `"adsense"`, add your `adsenseClient` (`ca-pub-…`), and fill each `adsenseSlot` id.
+
 The three daily sets are:
 
 | Set | How it is built |

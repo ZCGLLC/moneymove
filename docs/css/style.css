@@ -5,6 +5,7 @@
   --gold: #e0b33a;
   --ink: #f4f6fb;
   --muted: #9aa3c2;
+  --ad-line: #3a446e;
 }
 
 * {
@@ -22,19 +23,31 @@ body {
   font-family: "Trebuchet MS", "Segoe UI", sans-serif;
 }
 
+body {
+  padding-bottom: 0;
+}
+
 a {
   color: var(--gold);
 }
 
 .topbar,
-main,
+.page-shell,
+.ad-band,
 footer {
-  width: min(1080px, calc(100% - 32px));
+  width: min(1440px, calc(100% - 32px));
   margin: 0 auto;
 }
 
+.page-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 24px;
+  align-items: start;
+}
+
 .topbar {
-  padding: 28px 0 8px;
+  padding: 22px 0 8px;
   display: flex;
   justify-content: space-between;
   gap: 24px;
@@ -265,6 +278,114 @@ footer {
   font-size: 0.9rem;
 }
 
+.ad-band {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0 4px;
+}
+
+.ad-band-footer {
+  padding: 24px 0 0;
+}
+
+.ad-rail {
+  display: grid;
+  gap: 16px;
+  position: sticky;
+  top: 16px;
+}
+
+.ad-slot {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+}
+
+.ad-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #7d87ab;
+}
+
+.ad-frame {
+  display: grid;
+  place-items: center;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      #10162c 0 10px,
+      #141b34 10px 20px
+    );
+  border: 1px dashed var(--ad-line);
+  border-radius: 8px;
+  color: #8b94b8;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.ad-leaderboard .ad-frame {
+  width: min(728px, 100%);
+  height: 90px;
+}
+
+.ad-rect .ad-frame {
+  width: 300px;
+  height: 250px;
+}
+
+.ad-halfpage .ad-frame {
+  width: 300px;
+  height: 600px;
+}
+
+.ad-in-content {
+  margin: 8px 0 28px;
+}
+
+.ad-in-content .ad-frame {
+  width: min(336px, 100%);
+  height: 280px;
+}
+
+.ad-mobile-anchor {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  padding: 6px 8px 8px;
+  background: rgba(7, 11, 26, 0.94);
+  border-top: 1px solid #2a3358;
+}
+
+.ad-mobile-anchor .ad-frame {
+  width: min(320px, 100%);
+  height: 50px;
+}
+
+.adsbygoogle {
+  min-width: 120px;
+  min-height: 50px;
+}
+
+@media (max-width: 1100px) {
+  .page-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .ad-rail {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    position: static;
+    justify-items: center;
+  }
+
+  .ad-halfpage {
+    display: none;
+  }
+}
+
 @media (max-width: 800px) {
   .topbar,
   .hero,
@@ -275,5 +396,23 @@ footer {
 
   .official-note {
     text-align: left;
+  }
+
+  .ad-leaderboard .ad-frame {
+    width: min(320px, 100%);
+    height: 50px;
+  }
+
+  .ad-in-content .ad-frame {
+    width: min(300px, 100%);
+    height: 250px;
+  }
+
+  .ad-mobile-anchor {
+    display: grid;
+  }
+
+  body {
+    padding-bottom: 72px;
   }
 }

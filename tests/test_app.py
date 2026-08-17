@@ -25,3 +25,4 @@ def test_picks_endpoint(monkeypatch):
     assert home.status_code == 200
     assert b"Daily Powerball Picks" in home.data
     assert b"Generate new numbers" in home.data
+    assert b"data-ad=" in home.data
